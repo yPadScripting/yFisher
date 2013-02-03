@@ -3,7 +3,6 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 /**
  *
  * @author PimGame
@@ -32,6 +31,7 @@ public class yFishGUI extends javax.swing.JFrame {
         locationBox = new javax.swing.JComboBox<String>();
         fishBox = new javax.swing.JComboBox<String>();
         startButton = new javax.swing.JButton();
+        tunaBox = new javax.swing.JCheckBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
 
@@ -59,6 +59,11 @@ public class yFishGUI extends javax.swing.JFrame {
         });
 
         fishBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Harpoon", "Cage" }));
+        fishBox.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                fishBoxItemStateChanged(evt);
+            }
+        });
 
         startButton.setText("Start");
         startButton.addActionListener(new java.awt.event.ActionListener() {
@@ -67,28 +72,36 @@ public class yFishGUI extends javax.swing.JFrame {
             }
         });
 
+        tunaBox.setText("Drop Tuna?");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane1)
+                .addGap(188, 188, 188)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addGap(190, 190, 190))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(startButton, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(175, 175, 175)))
+                .addGap(0, 0, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jScrollPane1))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(73, 73, 73)
+                        .addComponent(locationBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(102, 102, 102)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(tunaBox, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(fishBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
-            .addGroup(layout.createSequentialGroup()
-                .addGap(73, 73, 73)
-                .addComponent(locationBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(102, 102, 102)
-                .addComponent(fishBox, 0, 72, Short.MAX_VALUE)
-                .addGap(94, 94, 94))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(172, 172, 172)
-                .addComponent(startButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGap(191, 191, 191))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel1)
-                .addGap(190, 190, 190))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -102,8 +115,10 @@ public class yFishGUI extends javax.swing.JFrame {
                     .addComponent(locationBox)
                     .addComponent(fishBox))
                 .addGap(18, 18, 18)
-                .addComponent(startButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGap(21, 21, 21))
+                .addComponent(tunaBox)
+                .addGap(52, 52, 52)
+                .addComponent(startButton, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
 
         pack();
@@ -111,6 +126,7 @@ public class yFishGUI extends javax.swing.JFrame {
 
     private void locationBoxItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_locationBoxItemStateChanged
         fishBox.removeAllItems();
+        tunaBox.setVisible(false);
         switch (locationBox.getSelectedItem().toString()) {
             case "Karamja":
                 fishBox.addItem("Harpoon");
@@ -125,11 +141,28 @@ public class yFishGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_locationBoxItemStateChanged
 
     private void startButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_startButtonActionPerformed
+        if (tunaBox.isSelected()) {
+            yFisher.dropTuna = true;
+        }
+
         yFisher.fish = fishBox.getSelectedItem().toString();
         yFisher.location = locationBox.getSelectedItem().toString();
-        this.dispose();
+
         yFisher.guiWait = false;
+
+        this.dispose();
     }//GEN-LAST:event_startButtonActionPerformed
+
+    private void fishBoxItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_fishBoxItemStateChanged
+        tunaBox.setVisible(false);
+        if (fishBox.getSelectedItem() != null) {
+            switch (fishBox.getSelectedItem().toString()) {
+                case "Harpoon":
+                    tunaBox.setVisible(true);
+                    break;
+            }
+        }
+    }//GEN-LAST:event_fishBoxItemStateChanged
 
     /**
      * @param args the command line arguments
@@ -179,5 +212,6 @@ public class yFishGUI extends javax.swing.JFrame {
     private javax.swing.JTextArea jTextArea1;
     private javax.swing.JComboBox locationBox;
     private javax.swing.JButton startButton;
+    private javax.swing.JCheckBox tunaBox;
     // End of variables declaration//GEN-END:variables
 }

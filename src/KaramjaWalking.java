@@ -24,7 +24,11 @@ public class KaramjaWalking extends Node {
 
     @Override
     public boolean activate() {
-        return (KaramjaFisher.atDocks() && Inventory.isFull()) || (KaramjaExchanging.atStiles() && !Inventory.isFull());
+        if (yFisher.dropTuna == true) {
+            return (KaramjaFisher.atDocks() && Inventory.isFull() && Inventory.getCount(359) == 0) || (KaramjaExchanging.atStiles() && !Inventory.isFull());
+        } else {
+            return (KaramjaFisher.atDocks() && (Inventory.isFull()) || (KaramjaExchanging.atStiles() && !Inventory.isFull()));
+        }
     }
 
     @Override

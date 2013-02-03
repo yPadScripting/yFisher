@@ -1,5 +1,6 @@
 
 
+
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -56,6 +57,7 @@ public class yFisher extends ActiveScript implements PaintListener, MouseListene
     public static int amount;
     private double startingxp;
     private double xpgained;
+    public static boolean dropTuna = false;
 
     @Override
     public void onStart() {
